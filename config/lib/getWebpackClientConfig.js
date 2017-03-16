@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const extensionsToRegex = require('ext-to-regex');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const RevManifestPlugin = require('tradie-webpack-utils/RevManifestPlugin');
 const CachedDllReferencePlugin = require('tradie-webpack-utils/CachedDllReferencePlugin');
 const styleExtensions = require('./styleExtensions');
@@ -119,6 +120,26 @@ module.exports = options => {
     filename: 'rev-manifest.json',
     cache: manifest
   }));
+
+
+  //compile service worker if one exists
+  if (true) {//TODO: check service worker file actually exists
+    config.plugins.push(new ServiceWorkerWebpackPlugin({
+      entry: paths.serviceWorkerEntryFile,
+      filename: 'service-worker.js',
+      excludes: [
+        '**/.*',
+        '*.map',
+        'rev-manifest.json',
+        '*.hot-update.js*'
+      ]
+      //TODO: add vendor.*.js file (might need a PR on ServiceWorkerWebpackPlugin for that)
+      //TODO: minify without UglifyJS plugin being installed (need a PR on ServiceWorkerWebpackPlugin for that)
+    }));
+  } else {
+    //TODO: include a default service worker??
+  }
+
 
   return config;
 };

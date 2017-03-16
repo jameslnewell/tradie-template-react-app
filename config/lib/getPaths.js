@@ -13,6 +13,7 @@ module.exports = root => {
     dest,
     tmp,
 
+    serviceWorkerEntryFile: path.join(src, 'service-worker.js'),
     vendorEntryFile: path.join(src, 'vendor.js'),
     vendorManifestFile: path.join(tmp, 'vendor.json')
 
